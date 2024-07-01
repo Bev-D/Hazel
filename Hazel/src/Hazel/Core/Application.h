@@ -75,6 +75,7 @@ namespace Hazel {
 		std::mutex m_MainThreadQueueMutex;
 	private:
 		static Application* s_Instance;
+		//声明了一个全局函数main为当前类的友元函数。
 		friend int ::main(int argc, char** argv);
 	};
 

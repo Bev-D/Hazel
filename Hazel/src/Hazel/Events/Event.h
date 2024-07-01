@@ -55,28 +55,49 @@ namespace Hazel {
 		}
 	};
 
-	class EventDispatcher
-	{
-	public:
-		EventDispatcher(Event& event)
-			: m_Event(event)
-		{
-		}
-		
-		// F will be deduced by the compiler
-		template<typename T, typename F>
-		bool Dispatch(const F& func)
-		{
-			if (m_Event.GetEventType() == T::GetStaticType())
-			{
-				m_Event.Handled |= func(static_cast<T&>(m_Event));
-				return true;
-			}
-			return false;
-		}
-	private:
-		Event& m_Event;
-	};
+/**
+ * @brief 事件派发器类描述
+ * EventDispatcher 类旨在将特定类型的事件派发给相应的处理器。
+ * 它使用模板方法来实现类型安全的事件处理。
+ */
+class EventDispatcher
+{
+public:
+    /**
+     * @brief 构造函数
+     * @param event 事件对象的引用，用于事件派发。
+     */
+    EventDispatcher(Event& event)
+        : m_Event(event)
+    {
+    }
+    
+    /**
+     * @brief 派发类型为 T 的事件至特定的处理器函数。
+     * @tparam T 要派发的事件类型，由上下文推导得出。
+     * @tparam F 处理器函数的类型，由上下文推导得出。
+     * @param func 处理器函数的引用，当事件类型匹配时将被调用。
+     * @return 若事件被派发并处理则返回 true；否则，返回 false。
+     * 
+     * 此函数首先检查当前事件类型是否与模板参数 T 的类型匹配。
+     * 若匹配，则调用处理器函数，若处理器函数返回 true，则标记事件为已处理。
+     */
+    // F 将由编译器推导
+    template<typename T, typename F>
+    bool Dispatch(const F& func)
+    {
+        if (m_Event.GetEventType() == T::GetStaticType())
+        {
+            m_Event.Handled |= func(static_cast<T&>(m_Event));
+            return true;
+        }
+        return false;
+    }
+
+private:
+    Event& m_Event; ///< 事件对象的引用，存储需要派发的事件。
+};
+
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& e)
 	{

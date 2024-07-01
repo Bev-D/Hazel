@@ -21,7 +21,12 @@ namespace Hazel {
 		static Ref<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		static Ref<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 	private:
+		
+		/* 定义一个静态成员变量s_CoreLogger，用于存储核心日志器的引用 */
+		/* 类型为spdlog::logger的引用，通过Ref智能指针进行管理 */
+		/* Ref智能指针通过引用计数机制自动管理所指向对象的内存，当没有更多引用指向该对象时，会自动释放该对象所占用的内存资源，从而防止内存泄漏。 */
 		static Ref<spdlog::logger> s_CoreLogger;
+
 		static Ref<spdlog::logger> s_ClientLogger;
 	};
 
@@ -46,6 +51,9 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 }
 
 // Core log macros
+
+/* 定义一个宏HZ_CORE_TRACE，用于输出核心日志的trace级别信息 */
+/* 使用预处理器宏__VA_ARGS__来处理可变参数，使得函数调用时可以传入多个参数 */
 #define HZ_CORE_TRACE(...)    ::Hazel::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define HZ_CORE_INFO(...)     ::Hazel::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define HZ_CORE_WARN(...)     ::Hazel::Log::GetCoreLogger()->warn(__VA_ARGS__)

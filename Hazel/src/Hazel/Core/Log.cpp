@@ -4,8 +4,13 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
-namespace Hazel {
-
+namespace Hazel
+{
+	/*
+	 * 这里的代码仅仅是定义了两个静态成员变量
+	 * 并没有对其进行初始化
+	 * 使用这两个静态成员变量之前，需要在其他地方对其进行初始化
+	 */
 	Ref<spdlog::logger> Log::s_CoreLogger;
 	Ref<spdlog::logger> Log::s_ClientLogger;
 
@@ -17,7 +22,8 @@ namespace Hazel {
 
 		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
 		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
-
+		
+		//初始化全局变量
 		s_CoreLogger = std::make_shared<spdlog::logger>("HAZEL", begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_CoreLogger);
 		s_CoreLogger->set_level(spdlog::level::trace);
@@ -28,6 +34,4 @@ namespace Hazel {
 		s_ClientLogger->set_level(spdlog::level::trace);
 		s_ClientLogger->flush_on(spdlog::level::trace);
 	}
-
 }
-
